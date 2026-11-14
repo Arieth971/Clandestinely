@@ -16,8 +16,9 @@ import com.example.clandestinely.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 
-public class EmergencyHelper {
+public class EmergencyInfo {
 
+    //M7: Emergency Info Screen (Static, Offline, Tap To Call)
     public static final String PHONE_UM_SECURITY = "0379677777";
     public static final String PHONE_EMERGENCY_999 = "999";
     public static final String PHONE_AMBULANCE = "0379492898";
@@ -28,7 +29,7 @@ public class EmergencyHelper {
         void onCallRequested(String phoneNumber);
     }
 
-    private EmergencyHelper() {}
+    private EmergencyInfo() {}
 
     public static void setupEmergencyFeatures(Fragment fragment, View rootView, CallCallback callCallback) {
         if (fragment == null || rootView == null) return;
