@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -28,14 +29,14 @@ public class HomeFragment extends Fragment {
 
     private TextView textTemperature, textFeelsLike, textHumidity, textRainChance, textAqi, textLastUpdated, textSummary;
 
-    private String pendingPhoneNumber
+    private String pendingPhoneNumber;
 
     private final ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                 if (isGranted) {
-                    EmergencyHelper.startCallIntent(this, pendingPhoneNumber);
+                    EmergencyInfo.startCallIntent(this, pendingPhoneNumber);
                 } else if (pendingPhoneNumber != null && isAdded()) {
-                    EmergencyHelper.startDialIntent(this, pendingPhoneNumber);
+                    EmergencyInfo.startDialIntent(this, pendingPhoneNumber);
                 } else if (isAdded()) {
                     Toast.makeText(requireContext(), "Permission DENIED", Toast.LENGTH_SHORT).show();
                 }
@@ -66,10 +67,10 @@ public class HomeFragment extends Fragment {
         // 3. Update the screen whenever new weather arrives
         viewModel.getWeather().observe(getViewLifecycleOwner(), this::showWeather);
 
-        // 4. Delegate Emergency & Calling Features to EmergencyHelper
-        EmergencyHelper.setupEmergencyFeatures(this, view, phoneNumber -> {
+        // 4. Delegate Emergency & Calling Features to EmergencyInfo
+        EmergencyInfo.setupEmergencyFeatures(this, view, phoneNumber -> {
             pendingPhoneNumber = phoneNumber;
-            EmergencyHelper.makePhoneCall(this, requestPermissionLauncher, phoneNumber);
+            EmergencyInfo.makePhoneCall(this, requestPermissionLauncher, phoneNumber);
         });
     }
 
